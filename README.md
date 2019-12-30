@@ -1,2 +1,0 @@
-# TesteReact
-Created with CodeSandbox
