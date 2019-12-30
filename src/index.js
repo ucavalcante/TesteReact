@@ -3,38 +3,67 @@ import ReactDOM from "react-dom";
 
 import "./styles.css";
 
-//Elemento
+function App() {
+  // Entrada, rodando, fim
+  const [estado, setEstado] = useState("ENTRADA");
 
-// JSX
-const elemento = (
-  <div>
-    <h3>Hello World!</h3>
-  </div>
-);
-const elemento2 = React.createElement(
-  "div",
-  null,
-  React.createElement("h3", null, "Hello World!")
-);
+  // palpite
+  const [palpite, setPalpite] = useState(150);
+  const [numPalpites, setNumpapite] = useState(1);
 
-function Mostrar(props) {
-  return <p>{props.i * 2}</p>;
-}
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(300);
 
-//componente funcional
-function App(props) {
-  const [i, setI] = useState(1);
-
-  const increment = () => {
-    setI(i + 1);
+  const IniciarJogo = () => {
+    setEstado("RODANDO");
+    setMin(0);
+    setMax(300);
+    setNumpapite(1);
+    setPalpite(150);
   };
 
+  if (estado === "ENTRADA") {
+    return <button onClick={IniciarJogo}>Começar a Jogar</button>;
+  }
+
+  const menor = () => {
+    setNumpapite(numPalpites + 1);
+    setMax(palpite);
+    const proxPalpite = parseInt((palpite - min) / 2) + min;
+    setPalpite(proxPalpite);
+  };
+
+  const maior = () => {
+    setNumpapite(numPalpites + 1);
+    setMin(palpite);
+    const proxPalpite = parseInt((max - palpite) / 2) + palpite;
+    setPalpite(proxPalpite);
+  };
+
+  const acertou = () => {
+    setEstado("FIM");
+  };
+
+  if (estado === "FIM") {
+    return (
+      <div>
+        <p>
+          Acertei o numero {palpite} com {numPalpites} chuetes!
+        </p>
+        <button onClick={IniciarJogo}>Reiniciar</button>
+      </div>
+    );
+  }
+
+  // 0 <> 300
+  // palpites que maquina deu
   return (
     <div className="App">
-      <h1>Hello CodeSandbox {i} </h1>
-      <h2>Start editing to see some magic happen!</h2>
-      <button onClick={increment}>Incrementar</button>
-      <Mostrar i={i} />
+      <p>O seu numero é {palpite} ?</p>
+
+      <button onClick={menor}>Menor!</button>
+      <button onClick={acertou}>Acertou!</button>
+      <button onClick={maior}>Maior!</button>
     </div>
   );
 }
